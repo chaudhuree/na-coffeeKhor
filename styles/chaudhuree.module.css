@@ -5,3 +5,15 @@
     place-items: center;
     background: palegreen;
 }
+.glasscontainer{
+    width: 400px;
+    height: 200px;
+    background-color: white;
+    border-radius: 10px;
+    opacity: 0.4;
+    backdrop-filter: blur(15px);
+    font-size: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
