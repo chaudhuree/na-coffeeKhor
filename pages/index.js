@@ -1,6 +1,6 @@
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
 import Banner from "../components/banner";
+import styles from "../styles/Home.module.css";
 
 export default function Home() {
     const buttonClickHandler =()=>{
@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>coffee khor</title>
+        <title>coffee khor ☕☕</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
