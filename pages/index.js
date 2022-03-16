@@ -34,7 +34,25 @@ export default function Home() {
                   
                   className={styles.card}
                   name='DarkHorse'
-                  imgUrl='/static/hero-image.png'
+                  imgUrl='/../public/static/darkHorse.jpeg'
+                  href='/coffee-store/darkhorse-coffee'
+                />
+              
+              
+                <Card
+                  
+                  className={styles.card}
+                  name='DarkHorse'
+                  imgUrl='/../public/static/darkHorse.jpeg'
+                  href='/coffee-store/darkhorse-coffee'
+                />
+              
+              
+                <Card
+                  
+                  className={styles.card}
+                  name='DarkHorse'
+                  imgUrl='/../public/static/darkHorse.jpeg'
                   href='/coffee-store/darkhorse-coffee'
                 />
               
