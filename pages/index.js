@@ -2,12 +2,12 @@ import Head from "next/head";
 import Image from "next/image";
 import Banner from "../components/banner";
 import Card from "../components/card";
-import CoffeeStore from "../data/coffee-stores.json";
+import CoffeeStoreData from "../data/coffee-stores.json";
 import styles from "../styles/Home.module.css";
 
 export async function getStaticProps(context) {
   return {
-    props: {CoffeeStoreData:CoffeeStore}, // will be passed to the page component as props
+    props: {CoffeeStore:CoffeeStoreData}, // will be passed to the page component as props
   }
 }
 export default function Home(props) {
@@ -35,8 +35,8 @@ export default function Home(props) {
             alt="hero-image"
           />
         </div>
-        <div className={styles.cardLayout}>
-          {props.CoffeeStoreData?.map((data) => {
+        <div className={styles.cardLayout} >
+          {props.CoffeeStore?.map((data) => {
             return <Card
               className={styles.card}
               key={data.id}
