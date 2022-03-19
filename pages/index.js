@@ -5,7 +5,7 @@ import Card from "../components/card";
 import CoffeeStoreData from "../data/coffee-stores.json";
 import styles from "../styles/Home.module.css";
 
-export async function getStaticProps(context) {
+export function getStaticProps(context) {
   return {
     props: {CoffeeStore:CoffeeStoreData}, // will be passed to the page component as props
   }

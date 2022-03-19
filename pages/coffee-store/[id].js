@@ -1,8 +1,29 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
+import CoffeeStoreData from "../../data/coffee-stores.json";
 
-function CoffeeStore() {
+export function getStaticProps(staticProps) {
+  const params = staticProps.params;
+  return {
+    props: {
+      CoffeeStore: CoffeeStoreData.find((CoffeeStore) => {
+        return CoffeeStore.id === Number(params.id);
+      }),
+    },
+  };
+}
+export function getStaticPaths() {
+  return {
+    paths: [
+      { params: { id: "0" } },
+      { params: { id: "1" } },
+      { params: { id: "2" } }
+    ],
+    fallback: false, // false or 'blocking'
+  };
+}
+function CoffeeStore(props) {
   const route = useRouter();
   console.log(route);
   return (
@@ -16,6 +37,7 @@ function CoffeeStore() {
       <Link href="/coffee-store/dynamic">
         <a>redirect to dynamic</a>
       </Link>
+      <p>{props.CoffeeStore.name}</p>
     </div>
   );
 }
