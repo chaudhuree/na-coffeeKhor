@@ -17,15 +17,17 @@ export function getStaticPaths() {
   return {
     paths: [
       { params: { id: "0" } },
-      { params: { id: "1" } },
-      { params: { id: "2" } }
+      { params: { id: "1" } }
+      
     ],
-    fallback: false, // false or 'blocking'
+    fallback: true, // false or 'blocking'
   };
 }
 function CoffeeStore(props) {
   const route = useRouter();
-  console.log(route);
+  if(route.isFallback){
+    return <div>loading....</div>
+  }
   return (
     <div>
       CoffeeStore id: {route.query.id}
