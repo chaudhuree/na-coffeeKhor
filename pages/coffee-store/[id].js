@@ -25,20 +25,22 @@ export function getStaticPaths() {
 }
 function CoffeeStore(props) {
   const route = useRouter();
+  // if id is not in the getStaticPaths
   if(route.isFallback){
     return <div>loading....</div>
   }
+  
   return (
     <div>
-      CoffeeStore id: {route.query.id}
-      <div></div>
+      {/* CoffeeStore id: {route.query.id}
+      <div></div> */}
       <Link href="/">
         <a>Back to Home</a>
-      </Link>{" "}
-      <br />
-      <Link href="/coffee-store/dynamic">
-        <a>redirect to dynamic</a>
       </Link>
+      <br />
+      {/* <Link href="/dynamic">
+        <a>redirect to dynamic</a>
+      </Link> */}
       <p>{props.CoffeeStore.name}</p>
     </div>
   );
