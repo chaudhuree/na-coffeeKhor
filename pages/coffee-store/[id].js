@@ -31,9 +31,9 @@ export function getStaticPaths() {
     fallback: true, // false or 'blocking'
   };
 }
-const handleUpvoteButton=()=>{
-   console.log("upvotebutton");
-}
+const handleUpvoteButton = () => {
+  console.log("upvotebutton");
+};
 function CoffeeStore(props) {
   const route = useRouter();
   // if id is not in the getStaticPaths
@@ -55,7 +55,7 @@ function CoffeeStore(props) {
               <a>← Back to Home</a>
             </Link>
           </div>
-          
+
           {/* <Link href="/dynamic">
         <a>redirect to dynamic</a>
       </Link> */}
