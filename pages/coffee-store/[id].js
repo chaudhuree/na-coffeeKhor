@@ -29,7 +29,7 @@ function CoffeeStore(props) {
   if(route.isFallback){
     return <div>loading....</div>
   }
-  
+  const {address,name,neighbourhood}= props.CoffeeStore
   return (
     <div>
       {/* CoffeeStore id: {route.query.id}
@@ -41,7 +41,9 @@ function CoffeeStore(props) {
       {/* <Link href="/dynamic">
         <a>redirect to dynamic</a>
       </Link> */}
-      <p>{props.CoffeeStore.name}</p>
+      <p>{name}</p>
+      <p>{address}</p>
+      <p>{neighbourhood}</p>
     </div>
   );
 }
