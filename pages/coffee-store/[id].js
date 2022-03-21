@@ -1,3 +1,4 @@
+import cls from "classnames";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,6 +31,9 @@ export function getStaticPaths() {
     fallback: true, // false or 'blocking'
   };
 }
+const handleUpvoteButton=()=>{
+   console.log("upvotebutton");
+}
 function CoffeeStore(props) {
   const route = useRouter();
   // if id is not in the getStaticPaths
@@ -51,7 +55,7 @@ function CoffeeStore(props) {
               <a>← Back to Home</a>
             </Link>
           </div>
-          <br />
+          
           {/* <Link href="/dynamic">
         <a>redirect to dynamic</a>
       </Link> */}
@@ -66,9 +70,22 @@ function CoffeeStore(props) {
             className={styles.storeImg}
           />
         </div>
-        <div className={styles.col2}>
-          <p>{address}</p>
-          <p>{neighbourhood}</p>
+        <div className={cls("glass", styles.col2)}>
+          <div className={styles.iconWrapper}>
+            <Image src="/static/icons/places.svg" width="24" height="24" />
+            <p className={styles.text}>{address}</p>
+          </div>
+          <div className={styles.iconWrapper}>
+            <Image src="/static/icons/nearMe.svg" width="24" height="24" />
+            <p className={styles.text}>{neighbourhood}</p>
+          </div>
+          <div className={styles.iconWrapper}>
+            <Image src="/static/icons/star.svg" width="24" height="24" />
+            <p className={styles.text}>1</p>
+          </div>
+          <button className={styles.upvoteButton} onClick={handleUpvoteButton}>
+            Up Vote!
+          </button>
         </div>
       </div>
     </div>
