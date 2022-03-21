@@ -14,12 +14,16 @@ export function getStaticProps(staticProps) {
   };
 }
 export function getStaticPaths() {
+  const paths=CoffeeStoreData.map(coffeestore=>{
+    return {params:{id:coffeestore.id.toString()}}
+  })
   return {
-    paths: [
-      { params: { id: "0" } },
-      { params: { id: "1" } }
+    // paths: [
+    //   { params: { id: "0" } },
+    //   { params: { id: "1" } }
       
-    ],
+    // ],
+    paths,
     fallback: true, // false or 'blocking'
   };
 }
