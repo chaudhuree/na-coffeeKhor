@@ -8,7 +8,7 @@ import styles from "../styles/Home.module.css";
 export async function getStaticProps(context) {
   // fetch data from foursquare
   const response = await fetch(
-    "https://api.foursquare.com/v3/places/nearby?ll=43.65267326999575,-79.39545615725015&query=coffee stores&v=20220105",
+    "https://api.foursquare.com/v3/places/nearby?ll=43.65267326999575,-79.39545615725015&query=coffee stores&v=20220105&limit=5",
     {
       headers: {
         Authorization: "fsq3CI/wq0x2IvwqZNc/a6+i9pf9RlYueY5QTgk8uRPEMbA=",
