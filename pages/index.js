@@ -5,30 +5,25 @@ import Card from "../components/card";
 import CoffeeStoreData from "../data/coffee-stores.json";
 import styles from "../styles/Home.module.css";
 
-export function getStaticProps(context) {
+export async function getStaticProps(context) {
   // fetch data from foursquare
-  fetch('https://api.foursquare.com/v3/places/nearby?ll=43.65267326999575,-79.39545615725015&query=coffee stores&v=20220105',
+  const response = await fetch(
+    "https://api.foursquare.com/v3/places/nearby?ll=43.65267326999575,-79.39545615725015&query=coffee stores&v=20220105",
     {
-      "headers": {
-        'Authorization': "fsq3CI/wq0x2IvwqZNc/a6+i9pf9RlYueY5QTgk8uRPEMbA="
-      }
+      headers: {
+        Authorization: "fsq3CI/wq0x2IvwqZNc/a6+i9pf9RlYueY5QTgk8uRPEMbA=",
+      },
     }
-  ).then(response => response.json())
-  .then(data => {
-    const transformedData = data?.results?.map((venue) => {
-        return {
-            id: venue.fsq_id,
-            ...venue
-        }
-    }) || [];
-    console.log(transformedData);
-  });
+  );
 
+  const data = await response.json();
+  CoffeeStoreData = data?.results;
+  console.log(CoffeeStoreData);
 
-  // 
+  //
   return {
-    props: {CoffeeStore:CoffeeStoreData}, // will be passed to the page component as props
-  }
+    props: { CoffeeStore: CoffeeStoreData }, // will be passed to the page component as props
+  };
 }
 export default function Home(props) {
   const buttonClickHandler = () => {
@@ -55,19 +50,21 @@ export default function Home(props) {
             alt="hero-image"
           />
         </div>
-        <div className={styles.cardLayout} >
+        <div className={styles.cardLayout}>
           {props.CoffeeStore?.map((data) => {
-            return <Card
-              className={styles.card}
-              key={data.id}
-              name={data.name}
-              imgUrl={data.imgUrl}
-              href={`/coffee-store/${data.id}`}
-            />;
+            const {fsq_id,name,location} = data;
+            return (
+              <Card
+                className={styles.card}
+                key={fsq_id}
+                name={name}
+                imgUrl={data.imgUrl ||"https://images.unsplash.com/photo-1498804103079-a6351b050096?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2468&q=80"}
+                href={`/coffee-store/${fsq_id}`}
+              />
+            );
           })}
         </div>
       </main>
     </div>
   );
 }
-
