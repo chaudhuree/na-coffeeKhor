@@ -2,28 +2,15 @@ import Head from "next/head";
 import Image from "next/image";
 import Banner from "../components/banner";
 import Card from "../components/card";
-import CoffeeStoreData from "../data/coffee-stores.json";
+import { CoffeeStores } from "../lib/CoffeeStores";
 import styles from "../styles/Home.module.css";
 
-export async function getStaticProps(context) {
+export async function getStaticProps() {
   // fetch data from foursquare
-  const response = await fetch(
-    "https://api.foursquare.com/v3/places/nearby?ll=43.65267326999575,-79.39545615725015&query=coffee stores&v=20220105&limit=7",
-    {
-      headers: {
-        Authorization: process.env.NEXT_PUBLIC_FOURSQUARE_KEY},
-      },
-  )
- 
-
-
-  const data = await response.json();
-  CoffeeStoreData = data?.results;
-  console.log(CoffeeStoreData);
-
+  const CoffeeStoresData = await CoffeeStores();
   //
   return {
-    props: { CoffeeStore: CoffeeStoreData }, // will be passed to the page component as props
+    props: { CoffeeStoresData }, // will be passed to the page component as
   };
 }
 export default function Home(props) {
@@ -52,7 +39,7 @@ export default function Home(props) {
           />
         </div>
         <div className={styles.cardLayout}>
-          {props.CoffeeStore?.map((data) => {
+          {props.CoffeeStoresData?.map((data) => {
             const { fsq_id, name, location } = data;
             return (
               <Card
