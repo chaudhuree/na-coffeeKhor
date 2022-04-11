@@ -42,7 +42,7 @@ function CoffeeStore(props) {
   if (route.isFallback) {
     return <div>loading....</div>;
   }
-  const { address, name, neighbourhood, imgUrl } = props.CoffeeStore;
+  const { location, name, imgUrl } = props.CoffeeStore;
   return (
     <div className={styles.layout}>
       <Head>
@@ -65,8 +65,10 @@ function CoffeeStore(props) {
             <h1 className={styles.name}>{name}</h1>
           </div>
           <Image
-            src={imgUrl||
-                  "https://images.unsplash.com/photo-1498804103079-a6351b050096?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2468&q=80"}
+            src={
+              imgUrl ||
+              "https://images.unsplash.com/photo-1498804103079-a6351b050096?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2468&q=80"
+            }
             alt={name}
             width={600}
             height={300}
@@ -76,12 +78,14 @@ function CoffeeStore(props) {
         <div className={cls("glass", styles.col2)}>
           <div className={styles.iconWrapper}>
             <Image src="/static/icons/places.svg" width="24" height="24" />
-            <p className={styles.text}>{address}</p>
+            <p className={styles.text}>{location.address}</p>
           </div>
-          <div className={styles.iconWrapper}>
-            <Image src="/static/icons/nearMe.svg" width="24" height="24" />
-            <p className={styles.text}>{neighbourhood}</p>
-          </div>
+          {location.neighborhood && (
+            <div className={styles.iconWrapper}>
+              <Image src="/static/icons/nearMe.svg" width="24" height="24" />
+              <p className={styles.text}>{location.neighborhood}</p>
+            </div>
+          )}
           <div className={styles.iconWrapper}>
             <Image src="/static/icons/star.svg" width="24" height="24" />
             <p className={styles.text}>1</p>
