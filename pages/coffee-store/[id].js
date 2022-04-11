@@ -4,22 +4,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import CoffeeStoreData from "../../data/coffee-stores.json";
+import { CoffeeStores } from "../../lib/CoffeeStores";
 import styles from "../../styles/coffeestore.module.css";
 
-export function getStaticProps(staticProps) {
+export async function getStaticProps(staticProps) {
   const params = staticProps.params;
+  const CoffeeStoresData = await CoffeeStores();
   return {
     props: {
-      CoffeeStore: CoffeeStoreData.find((CoffeeStore) => {
-        return CoffeeStore.id === Number(params.id);
+      CoffeeStore: CoffeeStoresData.find((CoffeeStore) => {
+        return CoffeeStore.fsq_id.toString() === params.id; // params.id is the id from the url which is always a string
       }),
     },
   };
 }
-export function getStaticPaths() {
-  const paths = CoffeeStoreData.map((coffeestore) => {
-    return { params: { id: coffeestore.id.toString() } };
+export async function getStaticPaths() {
+  const CoffeeStoresData = await CoffeeStores();
+  const paths = CoffeeStoresData.map((coffeestore) => {
+    return { params: { id: coffeestore.fsq_id.toString() } };
   });
   return {
     // paths: [
@@ -63,7 +65,8 @@ function CoffeeStore(props) {
             <h1 className={styles.name}>{name}</h1>
           </div>
           <Image
-            src={imgUrl}
+            src={imgUrl||
+                  "https://images.unsplash.com/photo-1498804103079-a6351b050096?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2468&q=80"}
             alt={name}
             width={600}
             height={300}
