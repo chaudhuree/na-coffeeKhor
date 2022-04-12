@@ -38,23 +38,28 @@ export default function Home(props) {
             alt="hero-image"
           />
         </div>
-        <div className={styles.cardLayout}>
-          {props.CoffeeStoresData?.map((data) => {
-            const { fsq_id, name, location } = data;
-            return (
-              <Card
-                className={styles.card}
-                key={fsq_id}
-                name={name}
-                imgUrl={
-                  data.imgUrl ||
-                  "https://images.unsplash.com/photo-1498804103079-a6351b050096?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2468&q=80"
-                }
-                href={`/coffee-store/${fsq_id}`}
-              />
-            );
-          })}
-        </div>
+        {props.CoffeeStoresData?.length > 0 && (
+          <div className={styles.sectionWrapper}>
+            <h2 className={styles.heading2}>Bashundhara Stores</h2>
+            <div className={styles.cardLayout}>
+              {props.CoffeeStoresData?.map((data) => {
+                const { fsq_id, name, location } = data;
+                return (
+                  <Card
+                    className={styles.card}
+                    key={fsq_id}
+                    name={name}
+                    imgUrl={
+                      data.imgUrl ||
+                      "https://images.unsplash.com/photo-1498804103079-a6351b050096?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2468&q=80"
+                    }
+                    href={`/coffee-store/${fsq_id}`}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
