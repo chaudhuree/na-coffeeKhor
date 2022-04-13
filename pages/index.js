@@ -2,6 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Banner from "../components/banner";
 import Card from "../components/card";
+import useTrackLocation from "../hook/use-track-location";
 import { CoffeeStores } from "../lib/CoffeeStores";
 import styles from "../styles/Home.module.css";
 
@@ -14,8 +15,11 @@ export async function getStaticProps() {
   };
 }
 export default function Home(props) {
+  const { handleTrackLocation, locationErrorMsg, isFindingLocation } =
+    useTrackLocation();
   const buttonClickHandler = () => {
     console.log("hello");
+    handleTrackLocation();
   };
   return (
     <div className={styles.container}>
@@ -27,9 +31,10 @@ export default function Home(props) {
 
       <main className={styles.main}>
         <Banner
-          buttonText="view stores nearby"
+          buttonText={isFindingLocation?"locating":"view stores nearby"}
           buttonClickHandler={buttonClickHandler}
         />
+        {locationErrorMsg && <p> Something Went Wrong: {locationErrorMsg}</p>}
         <div className={styles.heroImage}>
           <Image
             src="/../public/hero-image.png"
