@@ -1,13 +1,15 @@
 import { createContext, useReducer } from "react";
 import "../styles/globals.css";
 
+// context consumer
 const StoreContext = createContext();
 
+// action types for reducer
 export const ACTION_TYPES = {
   SET_LAT_LONG: "SET_LAT_LONG",
   SET_COFFEE_STORES: "SET_COFFEE_STORES",
 };
-
+// reducer function
 const storeReducer = (state, action) => {
   switch (action.type) {
     case ACTION_TYPES.SET_LAT_LONG: {
@@ -20,14 +22,15 @@ const storeReducer = (state, action) => {
       throw new Error(`Unhandled action type: ${action.type}`);
   }
 };
-
+// context provider
 const StoreProvider=({children})=>{
 const initialState={
   latLong:"",
   CoffeeStores:[],
 }
+// useReducer hook
 const [state, dispatch] = useReducer(storeReducer, initialState);
-// must return never forget to write return
+// must write return never forget to write return
   return (<StoreContext.Provider value={{state,dispatch}}>
     {children}
   </StoreContext.Provider>)
