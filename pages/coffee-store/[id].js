@@ -7,7 +7,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { CoffeeStores } from "../../lib/CoffeeStores";
 import styles from "../../styles/coffeestore.module.css";
 import { isEmpty } from "../../utils";
-import { StoreContext } from "../_app";
+import { StoreContext } from "../../store-context/store-context";
 
 export async function getStaticProps(staticProps) {
   const params = staticProps.params;
@@ -50,10 +50,15 @@ function CoffeeStore(props) {
   const route = useRouter();
   const id = route.query.id;
   // create useEffect hook
+  // useEffect always should be declare at top level
+  // otherwise issue Error: Rendered more hooks than during the previous render.
+
   useEffect(() => {
+    // when data is not from server then the object is empty
+    // then we can render data from static page
     if (isEmpty(props.CoffeeStore)) {
       if (coffeeStores.length > 0) {
-       let data = coffeeStores?.find((CoffeeStore) => {
+        let data = coffeeStores?.find((CoffeeStore) => {
           return CoffeeStore.fsq_id.toString() === id; // params.id is the id from the url which is always a string
         })
         setCoffeeStore(data);
@@ -71,6 +76,7 @@ function CoffeeStore(props) {
 
 
   // const { address, name, imgUrl,country } = props.CoffeeStore;
+  // rendered data from useState 
   const { address = "", name = "", imgUrl = "", country = "" } = coffeeStore;
 
   return (

@@ -5,8 +5,8 @@ import Banner from "../components/banner";
 import Card from "../components/card";
 import useTrackLocation from "../hook/use-track-location";
 import { CoffeeStores } from "../lib/CoffeeStores";
+import { ACTION_TYPES, StoreContext } from "../store-context/store-context";
 import styles from "../styles/Home.module.css";
-import { ACTION_TYPES, StoreContext } from "./_app";
 export async function getStaticProps() {
   // fetch data from foursquare
   const CoffeeStoresData = await CoffeeStores();
