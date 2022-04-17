@@ -1,12 +1,12 @@
 import Head from "next/head";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Banner from "../components/banner";
 import Card from "../components/card";
 import useTrackLocation from "../hook/use-track-location";
 import { CoffeeStores } from "../lib/CoffeeStores";
 import styles from "../styles/Home.module.css";
-
+import { ACTION_TYPES, StoreContext } from "./_app";
 export async function getStaticProps() {
   // fetch data from foursquare
   const CoffeeStoresData = await CoffeeStores();
@@ -17,11 +17,13 @@ export async function getStaticProps() {
   };
 }
 export default function Home(props) {
-  const [coffeeStores, setCoffeeStores] = useState([]);
+  const {dispatch,state}=useContext(StoreContext);
+  const {coffeeStores,latLong}=state;
+  // const [coffeeStores, setCoffeeStores] = useState([]);
 
   const [coffeeStoresError, setCoffeeStoresError] = useState(null);
 
-  const { handleTrackLocation, latLong, locationErrorMsg, isFindingLocation } =
+  const { handleTrackLocation, locationErrorMsg, isFindingLocation } =
     useTrackLocation();
   const buttonClickHandler = () => {
     handleTrackLocation();
@@ -36,7 +38,8 @@ export default function Home(props) {
       setCoffeeStoresError("")
       console.log({CoffeeStoresDataUsingLocation})
   
-      setCoffeeStores(CoffeeStoresDataUsingLocation);
+      // setCoffeeStores(CoffeeStoresDataUsingLocation);
+      dispatch({type:ACTION_TYPES.SET_COFFEE_STORES,payload:{coffeeStores:CoffeeStoresDataUsingLocation}})
       } catch (error) {
         // console.log(error);
         setCoffeeStoresError(error.message);

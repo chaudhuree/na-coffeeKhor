@@ -2,7 +2,7 @@ import { createContext, useReducer } from "react";
 import "../styles/globals.css";
 
 // context consumer
-const StoreContext = createContext();
+export const  StoreContext = createContext();
 
 // action types for reducer
 export const ACTION_TYPES = {
@@ -23,10 +23,11 @@ const storeReducer = (state, action) => {
   }
 };
 // context provider
-const StoreProvider=({children})=>{
+const  StoreProvider=({children})=>{
+    
 const initialState={
   latLong:"",
-  CoffeeStores:[],
+  coffeeStores:[],
 }
 // useReducer hook
 const [state, dispatch] = useReducer(storeReducer, initialState);
