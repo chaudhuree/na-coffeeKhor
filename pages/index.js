@@ -17,8 +17,8 @@ export async function getStaticProps() {
   };
 }
 export default function Home(props) {
-  const {dispatch,state}=useContext(StoreContext);
-  const {coffeeStores,latLong}=state;
+  const { dispatch, state } = useContext(StoreContext);
+  const { coffeeStores, latLong } = state;
   // const [coffeeStores, setCoffeeStores] = useState([]);
 
   const [coffeeStoresError, setCoffeeStoresError] = useState(null);
@@ -31,23 +31,24 @@ export default function Home(props) {
 
   // fetch data for client side
   useEffect(() => {
-    const fetchData=async()=>{
-    if (latLong) {
-      try {
-      const CoffeeStoresDataUsingLocation = await CoffeeStores(latLong, 5);
-      setCoffeeStoresError("")
-      console.log({CoffeeStoresDataUsingLocation})
-  
-      // setCoffeeStores(CoffeeStoresDataUsingLocation);
-      dispatch({type:ACTION_TYPES.SET_COFFEE_STORES,payload:{coffeeStores:CoffeeStoresDataUsingLocation}})
-      } catch (error) {
-        // console.log(error);
-        setCoffeeStoresError(error.message);
+    const fetchData = async () => {
+      if (latLong) {
+        try {
+          const response = await fetch(`/api/getCoffeeStoresByLocation?latLong=${latLong}&limit=5`);
+          const coffeeStores = await response.json()
+          setCoffeeStoresError("")
+          // console.log({CoffeeStoresDataUsingLocation})
+
+          // setCoffeeStores(CoffeeStoresDataUsingLocation);
+          dispatch({ type: ACTION_TYPES.SET_COFFEE_STORES, payload: { coffeeStores: coffeeStores } })
+        } catch (error) {
+          // console.log(error);
+          setCoffeeStoresError(error.message);
+        }
       }
     }
-    }
     fetchData()
-  },[latLong]);
+  }, [latLong]);
   return (
     <div className={styles.container}>
       <Head>
