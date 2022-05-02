@@ -11,7 +11,12 @@ const createCoffeeStore = async (req, res) => {
     }).firstPage()
     console.log({findCoffeeStoreRecord});
     if (findCoffeeStoreRecord.length != 0) {
-      res.json(findCoffeeStoreRecord)
+      const record=findCoffeeStoreRecord.map(record=>{
+        return {
+          ...record.fields
+        }
+      })
+      res.json(record)
     } else {
       res.json({ message: 'create database' })
     }
