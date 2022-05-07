@@ -5,10 +5,11 @@ const table = base('Table 1');
 console.log({ table });
 
 const createCoffeeStore = async (req, res) => {
+  const {id,name,address,imgUrl,voting,country}=req.body;
   if (req.method === "POST") {
     try {
       const findCoffeeStoreRecord = await table.select({
-        filterByFormula: `id="4"`,
+        filterByFormula: `id="${id}"`,
       }).firstPage()
       console.log({ findCoffeeStoreRecord });
       if (findCoffeeStoreRecord.length != 0) {
@@ -28,12 +29,18 @@ const createCoffeeStore = async (req, res) => {
        const createRecords= await table.create([
           {
             "fields": {
-              "id": "3",
-              "name": "juicy coffee store",
-              "address": "my address",
-              "imgUrl": "https://img1.com",
-              "voting": 20,
-              "country": "BD"
+              // "id": "3",
+              // "name": "juicy coffee store",
+              // "address": "my address",
+              // "imgUrl": "https://img1.com",
+              // "voting": 20,
+              // "country": "BD",
+              id,
+              name,
+              address,
+              imgUrl,
+              voting,
+              country,
             }
           }
         ])
