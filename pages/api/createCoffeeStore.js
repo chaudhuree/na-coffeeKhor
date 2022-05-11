@@ -8,10 +8,12 @@ const createCoffeeStore = async (req, res) => {
   const { id, name, address, imgUrl, voting, country } = req.body;
   if (req.method === "POST") {
     try {
+      // try to find coffeeStore with specific id
       if(id){const findCoffeeStoreRecord = await table.select({
         filterByFormula: `id="${id}"`,
       }).firstPage()
       console.log({ findCoffeeStoreRecord });
+      // if coffeeStore is available 
       if (findCoffeeStoreRecord.length != 0) {
         const record = findCoffeeStoreRecord.map(record => {
           return {
@@ -20,12 +22,13 @@ const createCoffeeStore = async (req, res) => {
         })
         res.status(200)
         res.json(record)
+        // if coffeestore is not available then
       } else {
-
+        // check if id or name is given or not
 
         if (id && name) {
 
-          // 
+          // if id and name availlabe then create data using below
           const createRecords = await table.create([
             {
               "fields": {
@@ -35,6 +38,7 @@ const createCoffeeStore = async (req, res) => {
                 // "imgUrl": "https://img1.com",
                 // "voting": 20,
                 // "country": "BD",
+                // get all the value from req.body
                 id,
                 name,
                 address,
@@ -44,12 +48,13 @@ const createCoffeeStore = async (req, res) => {
               }
             }
           ])
+          // after creating new database with given data then store the data in record
           const record = createRecords.map(record => {
             return {
               ...record.fields
             }
           })
-          // 
+          // send the data using res.json
           res.json({ message: 'created database', record })
         }else{
           res.json({message:"id or name is missing"})
