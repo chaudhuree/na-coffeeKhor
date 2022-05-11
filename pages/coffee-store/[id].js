@@ -90,13 +90,16 @@ function CoffeeStore(props) {
           return CoffeeStore.fsq_id.toString() === id; // params.id is the id from the url which is always a string
         })
         if(data){
-        console.log({data})
+        // console.log({data})
         setCoffeeStore(data);
         handleCreateCoffeeStore(data);
       }
       }
+    }else{
+      // server  Side Rendering
+     handleCreateCoffeeStore(props.CoffeeStore)   
     }
-  }, [id]);
+  }, [id,props,props.CoffeeStore]);
   console.log(props)
 
   // if id is not in the getStaticPaths
