@@ -5,9 +5,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { CoffeeStores } from "../../lib/CoffeeStores";
+import { StoreContext } from "../../store-context/store-context";
 import styles from "../../styles/coffeestore.module.css";
 import { isEmpty } from "../../utils";
-import { StoreContext } from "../../store-context/store-context";
 
 export async function getStaticProps(staticProps) {
   const params = staticProps.params;
@@ -49,6 +49,34 @@ function CoffeeStore(props) {
   const { state: { coffeeStores } } = useContext(StoreContext);
   const route = useRouter();
   const id = route.query.id;
+
+  // codes for airtable part coding
+  const handleCreateCoffeeStore =async (data)=>{
+    const {fsq_id,name,address,imgUrl,voting,country}=data
+    try{
+      // by default fetch is get so below code is for post
+      const response = await fetch("/api/createCoffeeStore", {
+        method: 'POST', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      body: JSON.stringify({
+        id:fsq_id,
+        name,
+        address:address||"",
+        imgUrl,
+        voting:0,
+        country:country||""
+      }),
+      })
+      // const dbCoffeeStore = await response.json();
+      // console.log({dbCoffeeStore});
+    }
+    catch(err){
+      console.log('error creating coffeeStore',err);
+    }
+  }
+
   // create useEffect hook
   // useEffect always should be declare at top level
   // otherwise issue Error: Rendered more hooks than during the previous render.
@@ -61,7 +89,11 @@ function CoffeeStore(props) {
         let data = coffeeStores?.find((CoffeeStore) => {
           return CoffeeStore.fsq_id.toString() === id; // params.id is the id from the url which is always a string
         })
+        if(data){
+        console.log({data})
         setCoffeeStore(data);
+        handleCreateCoffeeStore(data);
+      }
       }
     }
   }, [id]);
