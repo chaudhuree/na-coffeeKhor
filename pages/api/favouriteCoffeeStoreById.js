@@ -14,13 +14,38 @@ const favouriteCoffeeStoreById = async (req, res) => {
         // console.log({ findCoffeeStoreRecord });
         // if coffeeStore is available 
         if (findCoffeeStoreRecord.length != 0) {
-          const record = findCoffeeStoreRecord.map(record => {
+          const records = findCoffeeStoreRecord.map(record => {
             return {
+              recordId: record.id,
+              ...record.fields
+            }
+          })
+          if(records.length!==0){
+          // const record=records[0]
+          const calCulateVoting=Number(records[0].voting)+1
+          console.log({ calCulateVoting });
+          // update record
+          const updateRecord = await table.update([
+            {
+              id: records[0].recordId,
+              fields: {
+                voting: calCulateVoting,
+              },
+            },
+          ]);
+          // if(updateRecord){
+          //   const fvrecord= updateRecord.map( frecord => {
+          //     frecord.fields
+          //   })
+          // }
+          const data = updateRecord.map(record=>{
+            return{
               ...record.fields
             }
           })
           res.status(200)
-          res.json(record)
+          res.json(data)
+        }
           // if coffeestore is not available then
         }
         else {
@@ -32,7 +57,7 @@ const favouriteCoffeeStoreById = async (req, res) => {
         res.json({ message: 'id is missing' })
       }
     } catch (error) {
-      res.json({ message: 'error in upVoting api(favouriteCoffeeStoreById)', error })
+      res.json({ message: 'error in upVoting api(favouriteCoffeeStoreById)', error: error.message })
     }
   }
 }
