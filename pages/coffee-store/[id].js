@@ -49,11 +49,11 @@ function CoffeeStore(props) {
   const { state: { coffeeStores } } = useContext(StoreContext);
   // up voting design
   const [votingCount, setVotingCount] = useState(1)
-  const handleUpvoteButton = () => {
-    // console.log("upvotebutton");
+  // const handleUpvoteButton = () => {
+  //   // console.log("upvotebutton");
 
-    setVotingCount(count => count + 1);
-  };
+  //   setVotingCount(count => count + 1);
+  // };
   const route = useRouter();
   const id = route.query.id;
   
@@ -128,7 +128,28 @@ if(error){
     return <div>loading....</div>;
   }
 
+  const handleUpvoteButton = async () => {
+    try {
+      const response = await fetch("/api/favouriteCoffeeStoreById", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id,
+        }),
+      });
 
+      const dbCoffeeStore = await response.json();
+
+      if (dbCoffeeStore && dbCoffeeStore.length > 0) {
+        let count = votingCount + 1;
+        setVotingCount(count);
+      }
+    } catch (err) {
+      console.error("Error upvoting the coffee store", err);
+    }
+  };
 
   // const { address, name, imgUrl,country } = props.CoffeeStore;
   // rendered data from useState 

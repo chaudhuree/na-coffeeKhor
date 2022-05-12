@@ -23,7 +23,7 @@ const favouriteCoffeeStoreById = async (req, res) => {
           if(records.length!==0){
           // const record=records[0]
           const calCulateVoting=Number(records[0].voting)+1
-          console.log({ calCulateVoting });
+          // console.log({ calCulateVoting });
           // update record
           const updateRecord = await table.update([
             {
