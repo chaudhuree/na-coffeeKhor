@@ -4,11 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
+import useSWR from "swr";
 import { CoffeeStores } from "../../lib/CoffeeStores";
 import { StoreContext } from "../../store-context/store-context";
 import styles from "../../styles/coffeestore.module.css";
-import { isEmpty } from "../../utils";
-
+import { fetcher, isEmpty } from "../../utils";
 export async function getStaticProps(staticProps) {
   const params = staticProps.params;
   const CoffeeStoresData = await CoffeeStores();
@@ -42,51 +42,62 @@ export async function getStaticPaths() {
   };
 }
 
+//6 main function 
 
 function CoffeeStore(props) {
   const [coffeeStore, setCoffeeStore] = useState(props.CoffeeStore);
   const { state: { coffeeStores } } = useContext(StoreContext);
   // up voting design
-const [votingCount,setVotingCount]=useState(0)
-const handleUpvoteButton = () => {
-  // console.log("upvotebutton");
-  
-  setVotingCount(count=>count+1);
-};
+  const [votingCount, setVotingCount] = useState(1)
+  const handleUpvoteButton = () => {
+    // console.log("upvotebutton");
+
+    setVotingCount(count => count + 1);
+  };
   const route = useRouter();
   const id = route.query.id;
+  //7 swr to fetch data and use them 
+  
+  const { data,error } = useSWR(`/api/getCoffeeStoreById?id=${id}`, fetcher)
+  useEffect(() => {
+    if (data && data.length!=0) {
+      setCoffeeStore(data[0]);
+      setVotingCount(data[0].voting);
+      console.log('data from swr',data[0]);
+    }
+  }, [data])
 
   // codes for airtable part coding
-  const handleCreateCoffeeStore =async (data)=>{
-    const {fsq_id,name,address,imgUrl,voting,country}=data
-    try{
+  const handleCreateCoffeeStore = async (data) => {
+    const { fsq_id, name, address, imgUrl, voting, country } = data
+    try {
       // by default fetch is get so below code is for post
       const response = await fetch("/api/createCoffeeStore", {
-        method: 'POST', 
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-      body: JSON.stringify({
-        id:fsq_id,
-        name,
-        address:address||"",
-        imgUrl,
-        voting:0,
-        country:country||""
-      }),
+        body: JSON.stringify({
+          id: fsq_id,
+          name,
+          address: address || "",
+          imgUrl,
+          voting: 0,
+          country: country || ""
+        }),
       })
       // const dbCoffeeStore = await response.json();
       // console.log({dbCoffeeStore});
     }
-    catch(err){
-      console.log('error creating coffeeStore',err);
+    catch (err) {
+      console.log('error creating coffeeStore', err);
     }
   }
 
   // create useEffect hook
   // useEffect always should be declare at top level
   // otherwise issue Error: Rendered more hooks than during the previous render.
-  
+
   useEffect(() => {
     // when data is not from server then the object is empty
     // then we can render data from static page
@@ -95,17 +106,17 @@ const handleUpvoteButton = () => {
         let data = coffeeStores?.find((CoffeeStore) => {
           return CoffeeStore.fsq_id.toString() === id; // params.id is the id from the url which is always a string
         })
-        if(data){
-        // console.log({data})
-        setCoffeeStore(data);
-        handleCreateCoffeeStore(data);
+        if (data) {
+          // console.log({data})
+          setCoffeeStore(data);
+          handleCreateCoffeeStore(data);
+        }
       }
-      }
-    }else{
+    } else {
       // server  Side Rendering
-     handleCreateCoffeeStore(props.CoffeeStore)   
+      handleCreateCoffeeStore(props.CoffeeStore)
     }
-  }, [id,props,props.CoffeeStore]);
+  }, [id, props, props.CoffeeStore]);
   // console.log(props)
 
   // if id is not in the getStaticPaths
@@ -166,7 +177,7 @@ const handleUpvoteButton = () => {
           )}
           <div className={styles.iconWrapper}>
             <Image alt="coffeeStores" src="/static/icons/star.svg" width="24" height="24" />
-        <p className={styles.text}>{votingCount}</p>
+            <p className={styles.text}>{votingCount}</p>
           </div>
           <button className={styles.upvoteButton} onClick={handleUpvoteButton}>
             Up Vote!
