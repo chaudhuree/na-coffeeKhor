@@ -41,12 +41,18 @@ export async function getStaticPaths() {
     fallback: true, // false or 'blocking'
   };
 }
-const handleUpvoteButton = () => {
-  console.log("upvotebutton");
-};
+
+
 function CoffeeStore(props) {
   const [coffeeStore, setCoffeeStore] = useState(props.CoffeeStore);
   const { state: { coffeeStores } } = useContext(StoreContext);
+  // up voting design
+const [votingCount,setVotingCount]=useState(0)
+const handleUpvoteButton = () => {
+  // console.log("upvotebutton");
+  
+  setVotingCount(count=>count+1);
+};
   const route = useRouter();
   const id = route.query.id;
 
@@ -80,7 +86,7 @@ function CoffeeStore(props) {
   // create useEffect hook
   // useEffect always should be declare at top level
   // otherwise issue Error: Rendered more hooks than during the previous render.
-
+  
   useEffect(() => {
     // when data is not from server then the object is empty
     // then we can render data from static page
@@ -100,7 +106,7 @@ function CoffeeStore(props) {
      handleCreateCoffeeStore(props.CoffeeStore)   
     }
   }, [id,props,props.CoffeeStore]);
-  console.log(props)
+  // console.log(props)
 
   // if id is not in the getStaticPaths
 
@@ -160,7 +166,7 @@ function CoffeeStore(props) {
           )}
           <div className={styles.iconWrapper}>
             <Image alt="coffeeStores" src="/static/icons/star.svg" width="24" height="24" />
-            <p className={styles.text}>1</p>
+        <p className={styles.text}>{votingCount}</p>
           </div>
           <button className={styles.upvoteButton} onClick={handleUpvoteButton}>
             Up Vote!
