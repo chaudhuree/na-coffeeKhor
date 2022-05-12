@@ -56,6 +56,7 @@ function CoffeeStore(props) {
   };
   const route = useRouter();
   const id = route.query.id;
+  
   //7 swr to fetch data and use them 
   
   const { data,error } = useSWR(`/api/getCoffeeStoreById?id=${id}`, fetcher)
@@ -66,7 +67,9 @@ function CoffeeStore(props) {
       console.log('data from swr',data[0]);
     }
   }, [data])
-
+if(error){
+  console.log("something error with swr",error.message)
+}
   // codes for airtable part coding
   const handleCreateCoffeeStore = async (data) => {
     const { fsq_id, name, address, imgUrl, voting, country } = data
