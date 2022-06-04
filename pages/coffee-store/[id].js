@@ -9,6 +9,7 @@ import { CoffeeStores } from "../../lib/CoffeeStores";
 import { StoreContext } from "../../store-context/store-context";
 import styles from "../../styles/coffeestore.module.css";
 import { fetcher, isEmpty } from "../../utils";
+
 export async function getStaticProps(staticProps) {
   const params = staticProps.params;
   const CoffeeStoresData = await CoffeeStores();
@@ -48,12 +49,7 @@ function CoffeeStore(props) {
   const [coffeeStore, setCoffeeStore] = useState(props.CoffeeStore);
   const { state: { coffeeStores } } = useContext(StoreContext);
   // up voting design
-  const [votingCount, setVotingCount] = useState(1)
-  // const handleUpvoteButton = () => {
-  //   // console.log("upvotebutton");
-
-  //   setVotingCount(count => count + 1);
-  // };
+  const [votingCount, setVotingCount] = useState(0)
   const route = useRouter();
   const id = route.query.id;
   
@@ -107,7 +103,7 @@ if(error){
     if (isEmpty(props.CoffeeStore)) {
       if (coffeeStores.length > 0) {
         let data = coffeeStores?.find((CoffeeStore) => {
-          return CoffeeStore.fsq_id.toString() === id; // params.id is the id from the url which is always a string
+          return CoffeeStore.fsq_id.toString() === id; // id is  from the react.query  which is always a string
         })
         if (data) {
           // console.log({data})
